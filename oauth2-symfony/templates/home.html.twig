@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for owner in hwi_oauth_resource_owners() %}
+        <a href="{{ hwi_oauth_login_url(owner) }}">Login</a>
+    {% endfor %}
+    <pre>{{ dump(token) }}</pre>
+    <pre>{{ dump(user) }}</pre>
+{% endblock %}

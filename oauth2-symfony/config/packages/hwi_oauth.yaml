@@ -1,0 +1,22 @@
+hwi_oauth:
+    # list of names of the firewalls in which this bundle is active, this setting MUST be set
+    firewall_names: [main]
+
+    # https://github.com/hwi/HWIOAuthBundle/blob/master/Resources/doc/2-configuring_resource_owners.md
+    resource_owners:
+        custom:
+            type:                oauth2
+            class:               "HWI\\Bundle\\OAuthBundle\\OAuth\\ResourceOwner\\GenericOAuth2ResourceOwner"
+            client_id:           '%env(CLIENT_ID)%'
+            client_secret:       '%env(CLIENT_SECRET)%'
+            access_token_url:    "https://recette-accounts.mesdocteurs.com/oauth/token"
+            authorization_url:   "https://recette-accounts.mesdocteurs.com/oauth/authorize"
+            infos_url:           "https://recette-accounts.mesdocteurs.com/whoami"
+            scope:               "profile"
+            user_response_class: "HWI\\Bundle\\OAuthBundle\\OAuth\\Response\\PathUserResponse"
+            paths:
+                identifier: email
+                nickname:   username
+                realname:   ["firstName", "lastName"]
+            options:
+                csrf: true

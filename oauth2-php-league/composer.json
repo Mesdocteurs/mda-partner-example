@@ -1,0 +1,15 @@
+{
+    "name": "mes-docteurs/oauth2-php-league",
+    "description": "OAuth2 demo implementation using OAuth2 PHP League",
+    "type": "project",
+    "require": {
+        "league/oauth2-client": "^2.4"
+    },
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Quentin Schuler",
+            "email": "qschuler@neosyne.com"
+        }
+    ]
+}

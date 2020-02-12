@@ -1,0 +1,20 @@
+security:
+    providers:
+        in_memory: { memory: null }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: true
+            oauth:
+                resource_owners:
+                    custom: /login/check
+                login_path:        /login
+                failure_path:      /
+                use_forward:       false
+                oauth_user_provider:
+                    service: hwi_oauth.user.provider
+
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
