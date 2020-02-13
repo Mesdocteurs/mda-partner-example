@@ -38,15 +38,11 @@ module.exports = (app) => {
         headers: { 'Content-Type': 'application/json' },
       }).then((resp) => resp.json());
 
-      console.log('step 1');
-
       // Step 2 - Fetch User Information
       const fetchUsersData = await fetch(`${process.env.MD_API_BASEURL}/whoami`, {
         method: 'GET',
         headers: { Authorization: fetchUserToken.access_token },
       }).then((resp) => resp.json());
-
-      console.log('step 2');
 
       // Step 3 - Fetch Application Token
       const fetchApplicationToken = await fetch(`${process.env.MD_API_BASEURL}/oauth/token`, {
@@ -59,8 +55,6 @@ module.exports = (app) => {
         headers: { 'Content-Type': 'application/json' },
       }).then((resp) => resp.json());
 
-      console.log('step 3');
-
       // Step 4 - Allow User in App
       await fetch(`${process.env.MD_API_BASEURL}/api/OAuthClientApplications/authorize`, {
         method: 'PUT',
@@ -72,12 +66,8 @@ module.exports = (app) => {
         headers: { Authorization: fetchApplicationToken.access_token, 'Content-Type': 'application/json' },
       });
 
-      console.log('step 4');
-      console.log(Buffer.from(req.query.next, 'base64').toString());
-
       res.redirect(`${Buffer.from(req.query.next, 'base64').toString()}&userId=${fetchUsersData.id}`);
     } catch (error) {
-      console.log(error);
       res.status(400).json({ message: 'OAuth Process Error' });
     }
   });
