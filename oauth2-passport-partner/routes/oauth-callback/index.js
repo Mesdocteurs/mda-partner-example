@@ -75,7 +75,7 @@ module.exports = (app) => {
       console.log('step 4');
       console.log(Buffer.from(req.query.next, 'base64').toString());
 
-      res.redirect(Buffer.from(req.query.next, 'base64').toString());
+      res.redirect(`${Buffer.from(req.query.next, 'base64').toString()}&userId=${fetchUsersData.id}`);
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: 'OAuth Process Error' });
