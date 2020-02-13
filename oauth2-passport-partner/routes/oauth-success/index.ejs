@@ -28,35 +28,20 @@
       <a class="navbar-link btn" href="https://mesdocteurs.com">Mes Docteurs Website</a>
     </nav>
     <br />
-    <div class="container text-center">
-      <h1>Please select a button to test OAuth workflow</h1>
-      <br />
-      <button class="btn btn-success" onclick="onClick(true)" data-testid="success-workflow-btn">Workflow Success</button>
-      <button class="btn btn-danger" onclick="onClick(false)" data-testid="error-workflow-btn">Workflow Error</button>
+    <div class="container">
+      <h1>OAuth Process Success</h1>
+      <hr />
+      <h2>User Information</h2>
+      <ul>
+        <li>Firstname: <i><%= firstName %></i></li>
+        <li>LastName: <i><%= lastName %></i></li>
+        <br/>
+        <li>Email: <i><%= email %></i></li>
+        <li>Username: <i><%= lastName %></i></li>
+        <br/>
+        <li>User Id: <i><%= id %></i></li>
+        <li>Parent Id: <i><%= parentId %></i></li>
+      </ul>
     </div>
-    <script>
-      function onClick (authorization = true){
-        const qp = {
-          redirect_uri: encodeURIComponent("http://0.0.0.0:5000/oauth/callback?next=<%= next %>"),
-          response_type: 'code',
-          scope: 'profile',
-          state: "<%= state %>",
-          client_id: "<%= clientId %>",
-        };
-
-        const url = authorization ? '/oauth/allow?status=true' : '/oauth/allow';
-        const baseUrl = "<%= base %>"
-        fetch(url).then(() => {
-          let urlToGo = baseUrl+'/oauth/authorize?';
-
-          Object.keys(qp).map((key) => {
-            urlToGo += `${key}=${qp[key]}&`;
-          });
-          urlToGo = urlToGo.slice(0, -1);
-
-          window.location.assign(urlToGo)
-        })
-      }
-    </script>
   </body>
 </html>
