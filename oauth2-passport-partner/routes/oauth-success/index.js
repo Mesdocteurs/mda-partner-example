@@ -16,8 +16,6 @@ module.exports = (app) => {
         headers: { 'Content-Type': 'application/json' },
       }).then((resp) => resp.json());
 
-      console.log(fetchUserToken);
-
       // Step 2 - Fetch User Information
       const fetchUsersData = await fetch(`${process.env.MD_API_BASEURL}/whoami`, {
         method: 'GET',
