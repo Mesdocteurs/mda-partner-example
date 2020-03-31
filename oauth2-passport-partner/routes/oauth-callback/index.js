@@ -1,3 +1,19 @@
+/* ************************************************************************************ */
+/*     __  __           ____             _                                              */
+/*    |  \/  | ___  ___|  _ \  ___   ___| |_ ___ _   _ _ __ ___   ___ ___  _ __ ___     */
+/*    | |\/| |/ _ \/ __| | | |/ _ \ / __| __/ _ \ | | | '__/ __| / __/ _ \| '_ ` _ \    */
+/*    | |  | |  __/\__ \ |_| | (_) | (__| ||  __/ |_| | |  \__ \| (_| (_) | | | | | |   */
+/*    |_|  |_|\___||___/____/ \___/ \___|\__\___|\__,_|_|  |___(_)___\___/|_| |_| |_|   */
+/*                                                                                      */
+/*     index.js                                                                         */
+/*                                                                                      */
+/*     By: Guillaume TORRESANI <g.torresani@mesdocteurs.com>                            */
+/*                                                                                      */
+/*     created: 03/31/20 17:52:11 by Guillaume TORRESANI                                */
+/*     updated: 03/31/20 17:57:54 by Guillaume TORRESANI                                */
+/*                                                                                      */
+/* ************************************************************************************ */
+
 const fetch = require('node-fetch');
 
 const requiredKeysAreInObject = (keys = [], object = {}) => {
@@ -41,7 +57,7 @@ module.exports = (app) => {
       // Step 2 - Fetch User Information
       const fetchUsersData = await fetch(`${process.env.MD_API_BASEURL}/whoami`, {
         method: 'GET',
-        headers: { Authorization: fetchUserToken.access_token },
+        headers: { Authorization: `Bearer ${fetchUserToken.access_token}` },
       }).then((resp) => resp.json());
 
       // Step 3 - Fetch Application Token
@@ -63,7 +79,7 @@ module.exports = (app) => {
           client_secret: process.env.MD_CLIENT_SECRET,
           status: global.ALLOW_CONNECTION,
         }),
-        headers: { Authorization: fetchApplicationToken.access_token, 'Content-Type': 'application/json' },
+        headers: { Authorization: `Bearer ${fetchApplicationToken.access_token}`, 'Content-Type': 'application/json' },
       });
 
       res.redirect(`${Buffer.from(req.query.next, 'base64').toString()}&userId=${fetchUsersData.id}`);
