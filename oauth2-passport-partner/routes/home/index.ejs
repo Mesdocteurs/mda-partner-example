@@ -39,7 +39,7 @@
         const qp = {
           redirect_uri: encodeURIComponent("http://0.0.0.0:5000/oauth/callback?next=<%= next %>"),
           response_type: 'code',
-          scope: 'profile',
+          scope: 'user.email.ro user.profile.ro user.address.ro',
           state: "<%= state %>",
           client_id: "<%= clientId %>",
         };

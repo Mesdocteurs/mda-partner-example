@@ -1,3 +1,19 @@
+/* ************************************************************************************ */
+/*     __  __           ____             _                                              */
+/*    |  \/  | ___  ___|  _ \  ___   ___| |_ ___ _   _ _ __ ___   ___ ___  _ __ ___     */
+/*    | |\/| |/ _ \/ __| | | |/ _ \ / __| __/ _ \ | | | '__/ __| / __/ _ \| '_ ` _ \    */
+/*    | |  | |  __/\__ \ |_| | (_) | (__| ||  __/ |_| | |  \__ \| (_| (_) | | | | | |   */
+/*    |_|  |_|\___||___/____/ \___/ \___|\__\___|\__,_|_|  |___(_)___\___/|_| |_| |_|   */
+/*                                                                                      */
+/*     index.js                                                                         */
+/*                                                                                      */
+/*     By: Guillaume TORRESANI <g.torresani@mesdocteurs.com>                            */
+/*                                                                                      */
+/*     created: 04/07/20 12:25:23 by Guillaume TORRESANI                                */
+/*     updated: 04/07/20 14:22:43 by Guillaume TORRESANI                                */
+/*                                                                                      */
+/* ************************************************************************************ */
+
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
@@ -57,7 +73,7 @@ app.get('/', function (req, res) {
     res.send('<html lang="en"><body><a href="/auth/provider">Login</a></body></html>');
 });
 
-app.get('/auth/provider', passport.authenticate('provider', { scope: 'profile' }));
+app.get('/auth/provider', passport.authenticate('provider', { scope: 'user.email.ro user.profile.ro user.address.ro' }));
 
 app.get('/auth/provider/callback', passport.authenticate('provider', { successRedirect: '/', failureRedirect: '/' }));
 
