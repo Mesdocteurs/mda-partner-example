@@ -10,7 +10,7 @@
 /*     By: Guillaume TORRESANI <g.torresani@mesdocteurs.com>                            */
 /*                                                                                      */
 /*     created: 03/31/20 17:52:11 by Guillaume TORRESANI                                */
-/*     updated: 03/31/20 17:57:54 by Guillaume TORRESANI                                */
+/*     updated: 04/09/20 15:11:17 by Guillaume TORRESANI                                */
 /*                                                                                      */
 /* ************************************************************************************ */
 
@@ -75,14 +75,14 @@ module.exports = (app) => {
       await fetch(`${process.env.MD_API_BASEURL}/api/OAuthClientApplications/authorize`, {
         method: 'PUT',
         body: JSON.stringify({
-          user_id: fetchUsersData.id,
+          user_id: fetchUsersData.user_id,
           client_secret: process.env.MD_CLIENT_SECRET,
           status: global.ALLOW_CONNECTION,
         }),
         headers: { Authorization: `Bearer ${fetchApplicationToken.access_token}`, 'Content-Type': 'application/json' },
       });
 
-      res.redirect(`${Buffer.from(req.query.next, 'base64').toString()}&userId=${fetchUsersData.id}`);
+      res.redirect(`${Buffer.from(req.query.next, 'base64').toString()}&userId=${fetchUsersData.user_id}`);
     } catch (error) {
       res.status(400).json({ message: 'OAuth Process Error' });
     }
