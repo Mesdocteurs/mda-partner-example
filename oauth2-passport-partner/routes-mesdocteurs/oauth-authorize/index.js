@@ -7,34 +7,34 @@
 /*                                                                                      */
 /*     index.js                                                                         */
 /*                                                                                      */
-/*     By: Guillaume TORRESANI <g.torresani@mesdocteurs.com>                            */
+/*     By: Quentin MesDocteur <q.laffont@mesdocteurs.com>                               */
 /*                                                                                      */
-/*     created: 04/07/20 12:26:26 by Guillaume TORRESANI                                */
-/*     updated: 04/07/20 14:22:43 by Guillaume TORRESANI                                */
+/*     created: 06/08/20 16:03:07 by Quentin MesDocteur                                 */
+/*     updated: 07/08/20 11:12:43 by Guillaume Torresani                                */
 /*                                                                                      */
 /* ************************************************************************************ */
 
-const path = require('path');
-
-const generateHash = (length) => {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i += 1) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
+const URL = require('url');
 
 module.exports = (app) => {
-  app.get('/', (req, res) => {
-    const state = generateHash(9);
-    global.STATE_ARRAYS.push(state);
-    res.render(path.join(__dirname, 'index'), {
+  app.get('/oauth/authorize', (req, res) => {
+    if (!req.session.oauth2) {
+      req.session.oauth2 = [];
+    }
+    const state = Math.random().toString(36).substring(2, 15);
+    req.session.oauth2.push({
       state,
-      next: Buffer.from(`${process.env.MD_OAUTH_BASEURL}/oauth/authorize?client_id=${process.env.MD_CLIENT_ID}&response_type=code&scope=user.email.ro user.profile.ro user.address.ro&state=${state}`).toString('base64'),
-      clientId: process.env.PARTNER_CLIENT_ID,
-      base: process.env.MD_OAUTH_BASEURL,
     });
+    const redirect = URL.parse(process.env.MD_OAUTH_BASEURL);
+    redirect.pathname = '/oauth/authorize';
+    redirect.query = {
+      redirect_uri: `http://0.0.0.0:${process.env.PORT_MD}/oauth/callback`,
+      client_id: process.env.MD_CLIENT_ID,
+      response_type: 'code',
+      scope: 'user.email.ro user.profile.ro user.address.ro',
+      state,
+      prompt: 'none',
+    };
+    res.redirect(URL.format(redirect));
   });
 };

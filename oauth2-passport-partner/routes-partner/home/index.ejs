@@ -1,0 +1,66 @@
+<html>
+<head>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+    ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"
+    ></script>
+</head>
+<body>
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="/">Mes Docteurs OAuth - Express Example</a>
+    <a class="navbar-link btn" href="https://mesdocteurs.com">Mes Docteurs Website</a>
+</nav>
+<br/>
+<div class="container text-center">
+    <h1>Please select a button to test OAuth workflow</h1>
+    <br/>
+    <button class="btn btn-success" onclick="onClick(true)"
+            data-testid="success-workflow-btn">Workflow Success
+    </button>
+    <button class="btn btn-danger" onclick="onClick(false)"
+            data-testid="error-workflow-btn">Workflow Error
+    </button>
+</div>
+<script>
+  function onClick (authorization = true) {
+    const qp = {
+      redirect_uri: encodeURIComponent('http://0.0.0.0:5000/oauth/callback'),
+      response_type: 'code',
+      scope: 'user.email.ro user.profile.ro user.address.ro',
+      state: "<%= state %>",
+      client_id: "<%= clientId %>",
+    };
+    const url = new URL(`${window.location.origin}/oauth/allow`);
+    const params = {
+      status: authorization,
+      state: qp.state,
+    };
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+    const baseUrl = "<%= base %>";
+    fetch(url).then(() => {
+      let urlToGo = baseUrl + '/oauth/authorize?';
+
+      Object.keys(qp).map((key) => {
+        urlToGo += `${key}=${qp[key]}&`;
+      });
+      urlToGo = urlToGo.slice(0, -1);
+
+      window.location.assign(urlToGo);
+    });
+  }
+</script>
+</body>
+</html>
