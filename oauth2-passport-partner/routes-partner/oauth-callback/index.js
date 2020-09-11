@@ -7,10 +7,10 @@
 /*                                                                                      */
 /*     index.js                                                                         */
 /*                                                                                      */
-/*     By: Quentin MesDocteur <q.laffont@mesdocteurs.com>                               */
+/*     By: Guillaume Torresani <g.torresani@mesdocteurs.com>                            */
 /*                                                                                      */
-/*     created: 16/03/20 09:23:48 by Quentin MesDocteur                                 */
-/*     updated: 07/08/20 12:15:19 by Guillaume Torresani                                */
+/*     created: 07/08/20 17:52:53 by Guillaume Torresani                                */
+/*     updated: 11/09/20 16:33:53 by Guillaume Torresani                                */
 /*                                                                                      */
 /* ************************************************************************************ */
 
@@ -78,6 +78,7 @@ module.exports = (app) => {
       res.redirect(redirect.next);
     } catch
     (error) {
+      console.error(error);
       res.status(400).json({ message: 'OAuth Process Error' });
     }
   });
